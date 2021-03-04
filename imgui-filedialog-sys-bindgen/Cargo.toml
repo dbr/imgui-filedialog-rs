@@ -1,0 +1,9 @@
+[package]
+name = "imgui-filedialog-sys-bindgen"
+version = "0.1.0"
+authors = ["Ben Dickson"]
+edition = "2018"
+
+[dependencies]
+bindgen = "0.57"
+imgui-sys = { version = "0.7" }
