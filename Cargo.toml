@@ -12,10 +12,6 @@ readme = "README.md"
 imgui-filedialog-sys = { version = "0.1.0", path = "imgui-filedialog-sys" }
 imgui = "0.7"
 
-[features]
-# export all low level functions
-include_low_level_bindings = []
-
 [workspace]
 members = [
     "imgui-filedialog-sys",
