@@ -1,9 +1,9 @@
-# Rust bindings to [ImGuiFileDialog][upstream]
+# Rust bindings to [ImGuiFileDialog]
 
-Bindings to the [ImGuiFileDialog][upstream] module, a file browser interface for [Dear ImGui][imgui] interfaces, wrapped for use with [imgui-rs][imgui-rs]
+Bindings to the [ImGuiFileDialog] module, a file browser interface for [Dear ImGui][imgui] interfaces, wrapped for use with [imgui-rs][imgui-rs]
 
 [ImGuiFileDialog]: https://github.com/aiekick/ImGuiFileDialog
-[imgui](https://github.com/ocornut/imgui/)
+[imgui]: https://github.com/ocornut/imgui/
 [imgui-rs]: https://github.com/imgui-rs/imgui-rs/
 
 
