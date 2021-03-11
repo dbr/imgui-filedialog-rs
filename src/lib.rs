@@ -9,10 +9,8 @@ pub struct Context {
     ptr: *mut sys::ImGuiFileDialog,
 }
 
-fn ptr_to_string(ptr: *mut std::os::raw::c_char) -> String {
-    unsafe {
-        CStr::from_ptr(ptr).to_string_lossy().into_owned()
-    }
+unsafe fn ptr_to_string(ptr: *mut std::os::raw::c_char) -> String {
+    CStr::from_ptr(ptr).to_string_lossy().into_owned()
 }
 
 #[must_use]
@@ -98,25 +96,23 @@ impl<'p> FileDialog<'p> {
     }
 
     pub fn is_ok(&self) -> bool {
-        unsafe {
-            sys::IGFD_IsOk(self.context.ptr)
-        }
+        unsafe { sys::IGFD_IsOk(self.context.ptr) }
     }
 
     /// Path being browsed
     pub fn current_path(&self) -> Option<String> {
         if self.is_ok() {
-            let ptr = unsafe { sys::IGFD_GetCurrentPath(self.context.ptr) };
-            Some(ptr_to_string(ptr))
+            unsafe {
+                let ptr = sys::IGFD_GetCurrentPath(self.context.ptr);
+                Some(ptr_to_string(ptr))
+            }
         } else {
             None
         }
     }
 
     pub fn selection(&self) -> Option<Selection> {
-        Some(unsafe {
-            Selection::new(sys::IGFD_GetSelection(self.context.ptr), &self.context)
-        })
+        Some(unsafe { Selection::new(sys::IGFD_GetSelection(self.context.ptr), &self.context) })
     }
 }
 
@@ -125,22 +121,18 @@ pub struct Selection<'ui> {
     context: &'ui Context,
 }
 
-impl <'ui>Selection<'ui> {
+impl<'ui> Selection<'ui> {
     fn new(ptr: sys::IGFD_Selection, context: &'ui Context) -> Self {
-        Selection{ptr, context}
+        Selection { ptr, context }
     }
     pub fn files(&self) -> Vec<std::path::PathBuf> {
         let mut ret = vec![];
         for i in 0..self.ptr.count {
-            let path = ptr_to_string(unsafe {
-                (*self.ptr.table.offset(i as isize)).filePathName
-            });
-            let fixme = ptr_to_string(unsafe { sys::IGFD_GetCurrentPath(self.context.ptr) });
+            let path = unsafe { ptr_to_string((*self.ptr.table.offset(i as isize)).filePathName) };
+            let fixme = unsafe { ptr_to_string(sys::IGFD_GetCurrentPath(self.context.ptr)) };
             // FIXME: Why does `path` contain same as filename?
 
-            let fname = ptr_to_string(unsafe {
-                (*self.ptr.table.offset(i as isize)).fileName
-            });
+            let fname = unsafe { ptr_to_string((*self.ptr.table.offset(i as isize)).fileName) };
             ret.push(std::path::PathBuf::new().join(fixme).join(fname));
         }
         ret
