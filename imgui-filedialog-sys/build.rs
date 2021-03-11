@@ -5,9 +5,7 @@
 // for now, but expected to diverge from that over time.
 use std::{env, fs, io, path::Path};
 
-const CPP_FILES: &[&str] = &[
-    "third-party/ImGuiFileDialog/ImGuiFileDialog.cpp",
-];
+const CPP_FILES: &[&str] = &["third-party/ImGuiFileDialog/ImGuiFileDialog.cpp"];
 
 fn assert_file_exists(path: &str) -> io::Result<()> {
     match fs::metadata(path) {
