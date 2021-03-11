@@ -1,8 +1,7 @@
 use std::ffi::c_void;
 use std::ffi::CStr;
-use std::marker::PhantomData;
 
-use imgui::{im_str, ImStr, ImString};
+use imgui::{im_str, ImStr};
 
 pub extern crate imgui_filedialog_sys as sys;
 
@@ -123,7 +122,6 @@ impl<'p> FileDialog<'p> {
 
 pub struct Selection<'ui> {
     ptr: sys::IGFD_Selection,
-    //_phantom: PhantomData<Context<'ui>>,
     context: &'ui Context,
 }
 

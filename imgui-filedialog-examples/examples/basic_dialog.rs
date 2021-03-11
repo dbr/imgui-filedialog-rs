@@ -2,7 +2,6 @@ use imgui::im_str;
 mod support;
 
 use imgui_filedialog::sys;
-use sys::{IGFD_DisplayDialog, IGFD_IsOpened, IGFD_OpenModal, IGFD_OpenPaneModal};
 
 fn main() {
     let system = support::init(file!());
