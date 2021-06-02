@@ -1,7 +1,8 @@
 use std::ffi::c_void;
 use std::ffi::CStr;
+use std::path::PathBuf;
 
-use imgui::{im_str, ImStr};
+use imgui::{im_str, ImStr, ImString};
 
 pub extern crate imgui_filedialog_sys as sys;
 
@@ -44,16 +45,16 @@ impl Drop for Context {
     }
 }
 
-pub struct FileDialog<'p> {
-    id: &'p ImStr,
+pub struct FileDialog {
+    id: ImString,
     context: Context,
 }
 
-impl<'p> FileDialog<'p> {
-    pub fn create(id: &'p ImStr) -> Self {
+impl FileDialog {
+    pub fn create(id: &str) -> Self {
         Self {
             context: Context::new(),
-            id,
+            id: ImString::new(id),
         }
     }
 
@@ -111,6 +112,7 @@ impl<'p> FileDialog<'p> {
         }
     }
 
+    /// Files selected in dialog by user
     pub fn selection(&self) -> Option<Selection> {
         Some(unsafe { Selection::new(sys::IGFD_GetSelection(self.context.ptr), &self.context) })
     }
@@ -125,7 +127,7 @@ impl<'ui> Selection<'ui> {
     fn new(ptr: sys::IGFD_Selection, context: &'ui Context) -> Self {
         Selection { ptr, context }
     }
-    pub fn files(&self) -> Vec<std::path::PathBuf> {
+    pub fn files(&self) -> Vec<PathBuf> {
         let mut ret = vec![];
         for i in 0..self.ptr.count {
             let path = unsafe { ptr_to_string((*self.ptr.table.offset(i as isize)).filePathName) };
